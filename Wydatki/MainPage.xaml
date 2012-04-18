@@ -1,0 +1,147 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Wydatki.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit">
+
+    <phone:PhoneApplicationPage.Resources>
+        <DataTemplate x:Key="CostListBoxItemTemplate">
+
+            <Grid HorizontalAlignment="Stretch" Width="420">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock 
+                    Text="{Binding ItemNameZL}" 
+                    FontSize="{StaticResource PhoneFontSizeNormal}" 
+                    Grid.Column="1" Grid.ColumnSpan="2" 
+                    VerticalAlignment="Top" Margin="-100, 12, 0, 0"/>
+
+                <TextBlock 
+                    Text="{Binding DateTimeStr}" 
+                    FontSize="{StaticResource PhoneFontSizeNormal}" 
+                    Grid.Column="2" Grid.ColumnSpan="2" 
+                    VerticalAlignment="Top" Margin="-100, 12, 0, 0"/>
+
+                <TextBlock 
+                    Text="{Binding CategoryDesc}" 
+                    FontSize="{StaticResource PhoneFontSizeNormal}" 
+                    Grid.Column="3" Grid.ColumnSpan="2" 
+                    VerticalAlignment="Top" Margin="0, 12, 0, 0"/>
+
+            </Grid>
+        </DataTemplate>
+    </phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="PageTitle" Text="Wydatkomierz" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontSize="64" />
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" Background="Transparent">
+        
+            <controls:Pivot Margin="0, -36, 0, 0">
+                <controls:PivotItem Header="Lista">
+                    <StackPanel>
+
+                     <ListBox 
+                    x:Name="allCostItemsListBox" 
+                    ItemsSource="{Binding AllCostItems}" 
+                    Margin="12, 0, 12, 0" Width="446" 
+                    ItemTemplate="{StaticResource CostListBoxItemTemplate}" Height="595" />
+                    </StackPanel>
+
+                </controls:PivotItem>
+
+                <controls:PivotItem Header="Statystyki">
+                    <StackPanel>
+                      
+                        <TextBlock Text="Kategoria:"/>
+
+                        <toolkit:ListPicker
+                            x:Name="categoriesListPicker_"
+                            ItemsSource="{Binding NadCategoriesListAll}"
+                            DisplayMemberPath="Name"
+                            SelectionChanged="NadCategoriesSelectionChanged">
+                        </toolkit:ListPicker>
+
+                        <TextBlock Text="Podkategoria:"/>
+
+                        <toolkit:ListPicker
+                            x:Name="categoriesListPicker2_"
+                            ItemsSource="{Binding SubCategoriesListAll}"
+                            DisplayMemberPath="Name"
+                            SelectionChanged="SubCategoriesSelectionChanged">
+                        </toolkit:ListPicker>
+
+                        <TextBlock 
+                        x:Name="suma1"
+                        Text="Razem: " 
+                        FontSize="{StaticResource PhoneFontSizeNormal}" />
+
+                        <TextBlock 
+                        x:Name="suma"
+                        Text="{Binding SumChosenCategory}" 
+                        FontSize="{StaticResource PhoneFontSizeNormal}" />
+
+                    </StackPanel>                                       
+                    
+                </controls:PivotItem>
+
+                <controls:PivotItem Header="Opis">
+                    <StackPanel>
+
+                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Aplikacja służy do zapisywania bieżących wydatków. Można je dodawać lub usuwać przy użyciu menu dolnego. Na karcie LISTA pojawiają się wszystkie zebrane wydatki, a na karcie STATYSTYKI mamy dostęp do zgrupowanych statystyk."/>
+                        
+                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Uwagi i propozycje dotyczące rozwijania i poprawek w tej aplikacji proszę zgłaszać na adres: kamil.hawdziejuk@gmail.com. Zostaną uwzględnione w kolejnych wersjach programu."/>
+                    
+                    </StackPanel>
+                </controls:PivotItem>
+            </controls:Pivot>
+        </Grid>
+    </Grid>
+    
+  
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+
+            <shell:ApplicationBarIconButton 
+                IconUri="/Images/appbar.add_red.rest.png" 
+                Text="wydatek" 
+                x:Name="newTaskAppBarButton" 
+                Click="newTaskAppBarButton_Click"/>
+
+            <shell:ApplicationBarIconButton 
+                x:Name="delBarCancelButton" 
+                IconUri="/Images/appbar.delete.rest.png" 
+                Text="usuń" 
+                Click="delBarCancelButton_Click" />
+
+
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
