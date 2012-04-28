@@ -337,7 +337,11 @@ namespace Wydatki.ViewModel
         {
 
             // Remove the to-do item from the "all" observable collection.
-            AllCostItems.Remove(costForDelete);
+            //AllCostItems.Remove(costForDelete);
+
+            ObservableCollection<CostItem> costItemsNew = new ObservableCollection<CostItem>(this.AllCostItems);
+            costItemsNew.Remove(costForDelete);
+            this.AllCostItems = costItemsNew;
 
             // Remove the to-do item from the data context.
             costDoDB.Items.DeleteOnSubmit(costForDelete);
@@ -372,7 +376,9 @@ namespace Wydatki.ViewModel
             costDoDB.SubmitChanges();
 
             // Add a to-do item to the "all" observable collection.
-            AllCostItems.Add(newCostItem);
+            ObservableCollection<CostItem> costItemsNew = new ObservableCollection<CostItem>(this.AllCostItems);
+            costItemsNew.Add(newCostItem);
+            this.AllCostItems = costItemsNew;
 
             // Add a to-do item to the appropriate filtered collection.
             /*switch (newCostItem.Category.Name)
