@@ -35,6 +35,10 @@ namespace Wydatki
                 CostItem costForDelete = button.DataContext as CostItem;
 
                 App.ViewModel.DeleteCostItem(costForDelete);
+
+                this.suma1.Text = "Razem: " + App.ViewModel.SumChosenCategory.ToString() + "zł";
+
+                this.allCostItemsListBox.ItemsSource = App.ViewModel.ChosenCostsItems;
             }
 
             // Put the focus back to the main page.
@@ -68,13 +72,21 @@ namespace Wydatki
             if (costItem != null)
             {
                 App.ViewModel.DeleteCostItem(costItem);
+                this.suma1.Text = "Razem: " + App.ViewModel.SumChosenCategory.ToString() + "zł";
+
+                this.allCostItemsListBox.ItemsSource = App.ViewModel.ChosenCostsItems;
             }
 
             // Put the focus back to the main page.
             this.Focus();
         }
 
-
+        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            this.suma1.Text = "Razem: " + App.ViewModel.SumChosenCategory.ToString() + "zł";
+            this.allCostItemsListBox.ItemsSource = App.ViewModel.ChosenCostsItems;
+        }
 
         private void NadCategoriesSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -86,7 +98,8 @@ namespace Wydatki
                     App.ViewModel.SelectedNadCategory = selectedNadCategory;
                     this.categoriesListPicker2_.ItemsSource = App.ViewModel.SubCategoriesListWithAll;
                     this.categoriesListPicker2_.SelectedIndex = 0;
-                    this.suma.Text = App.ViewModel.SumChosenCategory.ToString();
+                    this.suma1.Text = "Razem: " + App.ViewModel.SumChosenCategory.ToString() + "zł";
+                    this.allCostItemsListBox.ItemsSource = App.ViewModel.ChosenCostsItems;
                 }
             }
             catch (Exception ex)
@@ -102,10 +115,44 @@ namespace Wydatki
                 if (selectedsubCategory != null)
                 {
                     App.ViewModel.SelectedSubCategory = selectedsubCategory;
-                    this.suma.Text = App.ViewModel.SumChosenCategory.ToString();
+                    this.suma1.Text = "Razem: " + App.ViewModel.SumChosenCategory.ToString() + "zł";
+
+                    this.allCostItemsListBox.ItemsSource = App.ViewModel.ChosenCostsItems;
                 }
             }
             catch (Exception ex)
+            {
+            }
+        }
+
+        private void DatePickerValueChangedTo(object sender, DateTimeValueChangedEventArgs e)
+        {
+            try
+            {
+
+                App.ViewModel.DateTimeTo = (DateTime)e.NewDateTime;
+
+                this.suma1.Text = "Razem: " + App.ViewModel.SumChosenCategory.ToString() + "zł";
+
+                this.allCostItemsListBox.ItemsSource = App.ViewModel.ChosenCostsItems;
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        private void DatePickerValueChangedFrom(object sender, DateTimeValueChangedEventArgs e)
+        {
+            try
+            {
+
+                App.ViewModel.DateTimeFrom = (DateTime)e.NewDateTime;
+
+                this.suma1.Text = "Razem: " + App.ViewModel.SumChosenCategory.ToString() + "zł";
+
+                this.allCostItemsListBox.ItemsSource = App.ViewModel.ChosenCostsItems;
+            }
+            catch (Exception)
             {
             }
         }

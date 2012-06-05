@@ -87,7 +87,7 @@ namespace Wydatki.Model
                 }
 
                 string nameNad = costCatNad != null ? costCatNad.Name : "";
-                return _category.Entity.Name + "/" + nameNad;
+                return nameNad + "->" + _category.Entity.Name;
             }
         }
 

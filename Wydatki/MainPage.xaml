@@ -56,66 +56,65 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="PageTitle" Text="Wydatkomierz" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontSize="56" />
+            <TextBlock x:Name="PageTitle" Text="Wydatkomierz" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontSize="40" />
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" Background="Transparent">
         
             <controls:Pivot Margin="0, -36, 0, 0">
-                <controls:PivotItem Header="Lista">
+                <controls:PivotItem Header="LISTA" FontSize="20">
                     <StackPanel>
 
-                     <ListBox 
+                        <toolkit:DatePicker
+                x:Name="dataPickerFrom"
+                Header="Od:"
+                Value="{Binding DateNowStr}"
+                ValueChanged="DatePickerValueChangedFrom" Height="96" Width="234" Margin="0,-30,225,0" />
+
+                        <toolkit:DatePicker
+                x:Name="dataPickerTo"
+                Header="Do:"
+                Value="{Binding DateNowStr}"
+                ValueChanged="DatePickerValueChangedTo" Height="90" Width="221" VerticalContentAlignment="Stretch" UseLayoutRounding="True" Margin="200,-100,0,0" />
+
+                        <toolkit:ListPicker
+                          Header="Kategoria:"
+                x:Name="categoriesListPicker_"
+                ItemsSource="{Binding NadCategoriesList}"
+                DisplayMemberPath="Name"
+                 SelectionChanged="NadCategoriesSelectionChanged" Width="200" Margin="12,-10,220,12">
+                        </toolkit:ListPicker>
+
+                        <toolkit:ListPicker
+                           Header="Podkategoria:"
+                x:Name="categoriesListPicker2_"
+                ItemsSource="{Binding SubCategoriesList}"
+                SelectionChanged="SubCategoriesSelectionChanged"
+                DisplayMemberPath="Name" Width="203" Margin="220,-96,12,12">
+                        </toolkit:ListPicker>
+
+                        <ListBox 
                     x:Name="allCostItemsListBox" 
-                    ItemsSource="{Binding AllCostItems}" 
-                    Margin="12, 0, 12, 0" Width="446" 
-                    ItemTemplate="{StaticResource CostListBoxItemTemplate}" Height="595" />
-                    </StackPanel>
-
-                </controls:PivotItem>
-
-                <controls:PivotItem Header="Statystyki">
-                    <StackPanel>
-                      
-                        <TextBlock Text="Kategoria:"/>
-
-                        <toolkit:ListPicker
-                            x:Name="categoriesListPicker_"
-                            ItemsSource="{Binding NadCategoriesListAll}"
-                            DisplayMemberPath="Name"
-                            SelectionChanged="NadCategoriesSelectionChanged">
-                        </toolkit:ListPicker>
-
-                        <TextBlock Text="Podkategoria:"/>
-
-                        <toolkit:ListPicker
-                            x:Name="categoriesListPicker2_"
-                            ItemsSource="{Binding SubCategoriesListAll}"
-                            DisplayMemberPath="Name"
-                            SelectionChanged="SubCategoriesSelectionChanged">
-                        </toolkit:ListPicker>
+                    ItemsSource="{Binding ChosenCostsItems}" 
+                    Margin="12, 0, 12, 0" Width="414" 
+                    ItemTemplate="{StaticResource CostListBoxItemTemplate}" Height="300" />
 
                         <TextBlock 
                         x:Name="suma1"
                         Text="Razem: " 
-                        FontSize="{StaticResource PhoneFontSizeNormal}" />
+                        FontSize="{StaticResource PhoneFontSizeNormal}" Height="44" Foreground="Red" Width="432" Margin="0,0,0,0" />
 
-                        <TextBlock 
-                        x:Name="suma"
-                        Text="{Binding SumChosenCategory}" 
-                        FontSize="{StaticResource PhoneFontSizeNormal}" />
+                    </StackPanel>
 
-                    </StackPanel>                                       
-                    
                 </controls:PivotItem>
 
-                <controls:PivotItem Header="Opis">
+                <controls:PivotItem Header="OPIS" FontSize="20">
                     <StackPanel>
 
-                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Aplikacja służy do zapisywania bieżących wydatków. Można je dodawać lub usuwać przy użyciu menu dolnego. Na karcie LISTA pojawiają się wszystkie zebrane wydatki, a na karcie STATYSTYKI mamy dostęp do zgrupowanych statystyk."/>
-                        
-                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Uwagi i propozycje dotyczące rozwijania i poprawek w tej aplikacji proszę zgłaszać na adres: kamil.hawdziejuk@gmail.com. Zostaną uwzględnione w kolejnych wersjach programu."/>
+                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Aplikacja służy do zapisywania bieżących wydatków. Można je dodawać lub usuwać (po zaznaczeniu wybranego wydatku z listy) przy użyciu menu dolnego. Można również grupować wszystkie wyniki wedle własnych parametrów pod kątem daty i/lub kategorii, która nas interesuje."/>
+
+                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Oficjalna strona projektu, to: http://code.google.com/p/wydatkomierz. Można tam zgłaszać uwagi i propozycje dotyczące rozwijania tej aplikacji. Zostaną one uwzględnione w kolejnych wersjach programu."/>
                     
                     </StackPanel>
                 </controls:PivotItem>

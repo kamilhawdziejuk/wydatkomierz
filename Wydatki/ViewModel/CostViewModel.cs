@@ -46,13 +46,30 @@ namespace Wydatki.ViewModel
         public ObservableCollection<CostItem> AllCostItems
         {
             get 
-            { 
+            {
+                //return new ObservableCollection<CostItem>(this.ChosenCosts);
                 return new ObservableCollection<CostItem>( from cost in _allCostItems orderby cost.DateTime ascending select cost);
             }
             set
             {
                 _allCostItems = value;
                 NotifyPropertyChanged("AllCostItems");
+                NotifyPropertyChanged("ChosenCostsItems");
+            }
+        }
+
+        private ObservableCollection<CostItem> _chosenCostsItems;
+        public ObservableCollection<CostItem> ChosenCostsItems
+        {
+            get
+            {
+                return new ObservableCollection<CostItem>(this.ChosenCosts);
+                //return new ObservableCollection<CostItem>(from cost in _allCostItems orderby cost.DateTime ascending select cost);
+            }
+            set
+            {
+                _chosenCostsItems = value;
+                NotifyPropertyChanged("ChosenCostsItems");
             }
         }
 
@@ -94,6 +111,34 @@ namespace Wydatki.ViewModel
             }
         }
 
+
+        private DateTime dateTimeFrom = DateTime.Now;
+        public DateTime DateTimeFrom
+        {
+            get
+            {
+                return this.dateTimeFrom;
+            }
+            set
+            {
+                this.dateTimeFrom = value;
+                NotifyPropertyChanged("ChosenCostsItems");
+            }
+        }
+
+        private DateTime dateTimeTo = DateTime.Now;
+        public DateTime DateTimeTo
+        {
+            get
+            {
+                return this.dateTimeTo;
+            }
+            set
+            {
+                this.dateTimeTo = value;
+                NotifyPropertyChanged("ChosenCostsItems");
+            }
+        }
 
         private DateTime dateTimeSetted = DateTime.Now;
         public DateTime DateTimeSetted
@@ -183,21 +228,20 @@ namespace Wydatki.ViewModel
             }
         }
 
-        /// <summary>
-        /// Suma wszystkich kategorii aktywnie wybranej nadkategorii
-        /// </summary>
-        public double SumChosenCategory
+        public List<CostItem> ChosenCosts
         {
             get
             {
-                double sum = 0;
+
+                List<CostItem> koszty = new List<CostItem>();
 
                 if (App.ViewModel.SelectedNadCategory != null && App.ViewModel.SelectedNadCategory.Name.Equals("Wszystkie"))
                 {
                     foreach (CostItem ci in this.AllCostItems)
                     {
-                        double d = Double.Parse(ci.ItemName, CultureInfo.InvariantCulture);
-                        sum += d;
+                        koszty.Add(ci);
+                        //double d = Double.Parse(ci.ItemName, CultureInfo.InvariantCulture);
+                        //sum += d;
                     }
                 }
                 //wybrano tylko kategorie nadrzedna:
@@ -209,7 +253,8 @@ namespace Wydatki.ViewModel
                         {
                             if (costItem.Category.ParentId == App.ViewModel.SelectedNadCategory.Id)
                             {
-                                sum += Double.Parse(costItem.ItemName, CultureInfo.InvariantCulture);
+                                koszty.Add(costItem);
+                                //sum += Double.Parse(costItem.ItemName, CultureInfo.InvariantCulture);
                             }
                         }
                     }
@@ -220,8 +265,45 @@ namespace Wydatki.ViewModel
                     {
                         if (costItem.Category.Id == App.ViewModel.SelectedSubCategory.Id)
                         {
-                            sum += Double.Parse(costItem.ItemName, CultureInfo.InvariantCulture);
+                            koszty.Add(costItem);
+                            //sum += Double.Parse(costItem.ItemName, CultureInfo.InvariantCulture);
                         }
+                    }
+                }
+
+                var results = new List<CostItem>();
+                foreach (var koszt in koszty)
+                {
+                    if (koszt.DateTime <= App.ViewModel.DateTimeTo
+                        &&
+                        koszt.DateTime >= App.ViewModel.DateTimeFrom)
+                    {
+                        results.Add(koszt);
+                    }
+                }
+
+                return results;
+            }
+        }
+
+        /// <summary>
+        /// Suma wszystkich kategorii aktywnie wybranej nadkategorii
+        /// </summary>
+        public double SumChosenCategory
+        {
+            get
+            {
+                double sum = 0;
+
+                List<CostItem> koszty = this.ChosenCosts;
+              
+                foreach (var koszt in koszty)
+                {
+                    if (koszt.DateTime <= App.ViewModel.DateTimeTo
+                        &&
+                        koszt.DateTime >= App.ViewModel.DateTimeFrom)
+                    {
+                        sum += Double.Parse(koszt.ItemName, CultureInfo.InvariantCulture);
                     }
                 }
 
@@ -345,6 +427,8 @@ namespace Wydatki.ViewModel
 
             // Remove the to-do item from the data context.
             costDoDB.Items.DeleteOnSubmit(costForDelete);
+
+
 
             // Remove the to-do item from the appropriate category.   
            /* switch (costForDelete.Category.Name)

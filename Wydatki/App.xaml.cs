@@ -68,7 +68,7 @@ namespace Wydatki
             }
 
             // Specify the local database connection string.
-            string DBConnectionString = "Data Source=isostore:/CostAppDataBase4.sdf";
+            string DBConnectionString = "Data Source=isostore:/CostAppDataBase9.sdf";
 
             // Create the database if it does not exist.
             using (CostDataContext db = new CostDataContext(DBConnectionString))
@@ -83,7 +83,7 @@ namespace Wydatki
 
     
                     //--------------------------------------------------------------------------------------
-                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Spożywcze" });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Bieżące" });
 
            
 
@@ -95,24 +95,38 @@ namespace Wydatki
                     //--------------------------------------------------------------------------------------
                     db.Categories.InsertOnSubmit(new CostCategory { Name = "Rachunki" });
 
-    
 
+                    //--------------------------------------------------------------------------------------
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Studia" });
+
+                    //--------------------------------------------------------------------------------------
+                   // db.Categories.InsertOnSubmit(new CostCategory { Name = "Hobby" });
+    
                     //Auto
                     db.Categories.InsertOnSubmit(new CostCategory { Name = "Paliwo", ParentId = 1 });
                     db.Categories.InsertOnSubmit(new CostCategory { Name = "Naprawy", ParentId = 1 });
                     db.Categories.InsertOnSubmit(new CostCategory { Name = "Dodatki", ParentId = 1 });
 
                     //Spożywcze
-                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Obiady", ParentId = 2 });
-                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Zakupy", ParentId = 2 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Spożywcze", ParentId = 2 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Bilety", ParentId = 2 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Prasa", ParentId = 2 });
 
                     //Rozrywka
-                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Kino/Teatr", ParentId = 3 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Kino", ParentId = 3 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Teatr", ParentId = 3 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Imprezy", ParentId = 3 });
                     db.Categories.InsertOnSubmit(new CostCategory { Name = "Alkohol", ParentId = 3 });
 
                     //Rachunki
                     db.Categories.InsertOnSubmit(new CostCategory { Name = "Mieszkanie", ParentId = 4 });
                     db.Categories.InsertOnSubmit(new CostCategory { Name = "Telefon", ParentId = 4 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Internet", ParentId = 4 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Media", ParentId = 4 });
+
+                    //Studia
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Książki", ParentId = 5 });
+                    db.Categories.InsertOnSubmit(new CostCategory { Name = "Ksero", ParentId = 5 });
 
                     // Save categories to the database.
                     db.SubmitChanges();
